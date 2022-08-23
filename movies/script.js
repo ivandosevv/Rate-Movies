@@ -28,12 +28,12 @@ function addMovie(movies, allMovies) {
                 <div class="modal-content">
                     <div class="modal-movie-name">${movie.title}
                         <div class="movie-categories">
-                        ${movie.category}, ${movie.region}
+                        ${movie.genres[0].name}, ${movie.production_countries[0].name}
                         </div>
                     </div>
                     <img src="${movie.image}"
                         width="200px" height="200px" class="modal-movie-image">
-                    <div class="modal-movie-description">${movie.instruction}</div>
+                    <div class="modal-movie-description">${movie.overview}</div>
                     <div class="comment-section">
 
                     <textarea id="${movie.id}-comment-input" rows="5" class="comment-input" maxlength="200" 
@@ -50,27 +50,25 @@ function addMovie(movies, allMovies) {
                         <input type="radio" id="4" name="${movie.id}-rating" value="4">
                         <label for="4">4</label>
                         <input type="radio" id="5" name="${movie.id}-rating" value="5">
-                        <label for="5">5</label>
-                        <input type="radio" id="6" name="${movie.id}-rating" value="6">
-                        <label for="6">6</label> 
+                        <label for="5">5</label> 
                         <button class="rate-button" id="${movie.id}-rate">Rate</button>
                     </div>
                     <div class="all-comments" id=${movie.id}-comments">
                         ${getComments(movie.id).map(currComment => `<div class="comment-container">
                             <div class="comment-author">
-                                ${comment.author}
+                                ${currComment.author}
                             </div>
                             <div class="comment-text">
-                                ${comment.comment}
+                                ${currComment.comment}
                             </div>
                             <div class="comment-date">
-                                ${comment.timestamp}
+                                ${currComment.timestamp}
                             </div>
                         </div>`).join('<br>')}
                     </div>
                 </div>
                 <div class="close-button-section">
-                    <button class="close-button" id={movie.id}-close">Close</button>
+                    <button class="close-button" id=${movie.id}-close">Close</button>
                 </div>
             </div>
         </div>
@@ -83,13 +81,22 @@ function addMovie(movies, allMovies) {
         const modal = document.getElementById(`${button.id}-movie`);
         const close = document.getElementById(`${button.id}-close`);
 
-        button.onClick = function() {
+        button.onlick = function() {
             modal.style.display = "block";
         }
 
-        // close.onClick = () {
-        //     modal.style.display = "none";
+        //close.onclick = function () {
+        //    modal.style.display = "none";
         // }
+    });
+
+    const commentButtons = document.getElementsByClassName("comment-button");
+    Array.prototype.forEach.call(commentButtons, (button) => {
+        button.onclick = () => {
+            const movieId = button.id.substr(0, button.id.indexOf('-'));
+            const comment = document.getElementById(`${movieId}-comment-input`).value;
+            addComment(comment, movieId);
+        }
     });
 
     const rateButtons = document.getElementsByClassName("rate-button");
@@ -175,28 +182,24 @@ function getCommentsCount(movieId) {
 
 function getComments(movieId) {
     const commentsItem = localStorage.getItem("comments");
-
     if (!commentsItem) {
         return [];
     }
     const comments = JSON.parse(commentsItem);
-
     return comments.filter(comment => comment.movieId === movieId);
 }
 
 function addComment(comment, movieId) {
     const author = JSON.parse(localStorage.getItem("currentUser")).email;
     const commentsItem = localStorage.getItem("comments");
-    const commentsDiv = document.getElementById(`$`)
-
-    if(!commentsItem) {
+    const commentsDiv = document.getElementById(`${movieId}-comments`);
+    if (!commentsItem) {
         localStorage.setItem("comments", JSON.stringify([{
             author,
             comment,
             movieId,
             timestamp: (new Date()).toString(),
         }]));
-
         const dv = document.createElement("div");
         dv.setAttribute("class", "comment-container");
         dv.innerHTML = `<br>
@@ -209,12 +212,10 @@ function addComment(comment, movieId) {
                         <div class="comment-date">
                             ${(new Date()).toString()}
                         </div>
-                        </br>`;
-        
+                        <br>`;
         commentsDiv.appendChild(dv);
-
         const close = document.getElementById(`${movieId}-close`);
-        close.onClick = () => {
+        close.onclick = () => {
             window.location.reload();
         }
     } else {
@@ -225,7 +226,6 @@ function addComment(comment, movieId) {
             movieId,
             timestamp: (new Date()).toString(),
         });
-
         localStorage.setItem("comments", JSON.stringify(comments)); 
         const dv = document.createElement("div");
         dv.setAttribute("class", "comment-container");
@@ -240,9 +240,7 @@ function addComment(comment, movieId) {
                             ${(new Date()).toString()}
                         </div>
                         <br>`;
-
         commentsDiv.appendChild(dv);
-
         const close = document.getElementById(`${movieId}-close`);
         close.onclick = () => {
             window.location.reload();
@@ -292,7 +290,7 @@ function filterByName(movies, name) {
     return movies.filter(movie => movie.title.toLowerCase().startsWith(name.toLowerCase()));
 }
 
-fetch('https://api.npoint.io/e7f0b40ab3db42e3ca82') 
+fetch('https://api.npoint.io/f037e09ef04e5df7150c') 
     .then(response => response.json())
     .then(data => {
         const movies = data.movies.slice(10, 20);
