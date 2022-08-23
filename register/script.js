@@ -9,8 +9,9 @@ function checkValidEmail(email) {
 const register = document.getElementById("signup-form");
 
 function showErrorMessage(errorMessage) {
-    const errorDiv = document.getElementById("error-message");
-    errorDiv.innerHTML = errorMessage;
+    //const errorDiv = document.getElementById("error-message");
+    //errorDiv.innerHTML = errorMessage;
+    alert(errorMessage);
 }
 window.onload = function(){
     register.addEventListener("submit", (e) => {

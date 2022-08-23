@@ -8,8 +8,9 @@ function checkValidEmail(email) {
 const login = document.getElementById("login-form");
 
 function showErrorMessage(error) {
-    const errorId = document.getElementById("error-message");
-    errorId.innerHTML = error;
+    //const errorId = document.getElementById("error-message");
+    //errorId.innerHTML = error;
+    alert(error);
 }
 window.onload = function(){
     login.addEventListener("submit", (e) => {

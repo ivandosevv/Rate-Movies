@@ -10,7 +10,7 @@
   <body>
     <header>
       <div class ="movies">
-        <h1>Movies</h1>
+        <a class="create-account" href="../movies/index.html">Movies</a>
         <input type="text" class="filter-input" id="search" placeholder="Search..."/>
       </div>
       <nav>
@@ -18,14 +18,9 @@
         <button class="top-10" id="top-10-popular">Top 10 Popular</button>
         <button class = "logout" onclick="goToLogin()">Log out</button>
       </nav>
-
     </header>
     <main>
-      <div class="filter-box">
-      </div>
-      <div class="movies-table">
-        <ul id="movies-list"></ul>
-      </div>
+        <section id="movies-list"></section>
     <main>
       <script src="script.js" type="text/javascript"></script>
   </body>

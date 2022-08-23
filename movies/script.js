@@ -3,63 +3,47 @@ function addMoviesList(movies, allMovies) {
     moviesList.innerHTML = "";
     movies.forEach(movie => {
         moviesList.innerHTML += `
-                <li>
-                    <div class="li-section">
-                        <img class="movie-image"
-                            src="${movie.image}"
-                            width="50px" height="50px">
-                        <div class="movie-name">
+                    <article>
+                    <div class="movie-image">
+                        <img src="${movie.image}">
+                    </div>
+                        <div class="movie-title">
                             ${movie.title}
                         </div>
-                    </div>
-                    <div class="li-section">
-                        <div>
+                        <div class="ratings">
                         ${getRating(movie.id)}
                         </div>&nbsp;&nbsp;&nbsp;
-                        <div>
+                        <div class = "comments">
                         ${getCommentsCount(movie.id)}
                         </div>&nbsp;&nbsp;&nbsp;
-                        
                         <button class="see-movie-button" id="${movie.id}">See movie</button>
-                    </div>
+                    </article>
                     <div id="${movie.id}-movie" class="modal">
                         <div class="modal-content">
-                            <div class="modal-movie-name">${movie.title}
-                            </div>
-                            <img src="${movie.image}"
-                                width="200px" height="200px" class="modal-movie-image">
-                            <div class="modal-movie-description">${movie.overview}</div>
-                            <table class="modal-category-table">
-                                <tr>
-                                    <th>Genres</th>
-                                </tr>
-                                ${movie.genres.map(genre => `<tr>
-                                    <td>${genre.name}</td>
-                                </tr>`)}
-                            </table>
-                            <table class="modal-country-table">
-                                <tr>
-                                    <th>Production countries</th>
-                                </tr>
-                                ${movie.production_countries.map(country => `<tr>
-                                    <td>${country.name}</td>
-                                </tr>`)}
-                            </table>
+                            <img src="${movie.image}" class="modal-movie-image">
+                            <h1 class="modal-movie-title">${movie.title}</h1>
+                            <div class="modal-wrapper">
+                                <div class="modal-movie-description">${movie.overview}</div>
+                                    <div class="movie-info">
+                                        <p><span>Genres: </span> ${movie.genres.map(genre => `${genre.name}`)}</p>
+                                        <p><span>Production countries: </span>${movie.production_countries.map(country => `${country.name}`)}</p>
+                                    </div>
                             <div class="comment-section">
-                            <textarea id="${movie.id}-comment-input" rows="5" class="comment-input" maxlength="200" placeholder="Comment..."></textarea>
-                            <button class="comment-button" id="${movie.id}-comment">Comment</button>
-                            <div>
-                            <input type="radio" id="1" name="${movie.id}-rating" value="1">
-                            <label for="1">1</label>
-                            <input type="radio" id="2" name="${movie.id}-rating" value="2">
-                            <label for="2">2</label>
-                            <input type="radio" id="3" name="${movie.id}-rating" value="3">
-                            <label for="3">3</label> 
-                            <input type="radio" id="4" name="${movie.id}-rating" value="4">
-                            <label for="4">4</label>
-                            <input type="radio" id="5" name="${movie.id}-rating" value="5">
-                            <label for="5">5</label> 
-                            <button class="rate-button" id="${movie.id}-rate">Rate</button>
+                                <textarea id="${movie.id}-comment-input" rows="5" class="comment-input" maxlength="200" placeholder="Comment..."></textarea>
+                                <button class="comment-button" id="${movie.id}-comment">Comment</button>
+                            </div>
+                            <div class="rating">
+                                <input type="radio" id="1" name="${movie.id}-rating" value="1">
+                                <label for="1">1</label>
+                                <input type="radio" id="2" name="${movie.id}-rating" value="2">
+                                <label for="2">2</label>
+                                <input type="radio" id="3" name="${movie.id}-rating" value="3">
+                                <label for="3">3</label> 
+                                <input type="radio" id="4" name="${movie.id}-rating" value="4">
+                                <label for="4">4</label>
+                                <input type="radio" id="5" name="${movie.id}-rating" value="5">
+                                <label for="5">5</label> 
+                                <button class="rate-button" id="${movie.id}-rate">Rate</button>
                             </div>
                             <div class="all-comments" id="${movie.id}-comments" > 
                                 ${getComments(movie.id).map(comment => `<div class="comment-container">
@@ -80,7 +64,6 @@ function addMoviesList(movies, allMovies) {
                             </div>
                         </div>
                     </div>
-                </li>
         `
     })
 
@@ -132,11 +115,11 @@ function getTop10Rated(movies) {
     } else {
         const ratings = JSON.parse(ratingsItem);
         const topMovies = movies.filter(movie => {
-            const rating = ratings.find(r => r.movieId === movie.id);
+            const rating = ratings.find(r => r.movieId == movie.id);
             return !!rating;
         }).sort((movie1, movie2) => {
-            const rating1 = ratings.find(r => r.movieId === movie1.id);
-            const rating2 = ratings.find(r => r.movieId === movie2.id);
+            const rating1 = ratings.find(r => r.movieId == movie1.id);
+            const rating2 = ratings.find(r => r.movieId == movie2.id);
             return rating1.rating < rating2.rating ? 1 : -1;
         })
         topMovies.slice(0, 10);
@@ -151,11 +134,11 @@ function getTop10Popular(movies) {
     } else {
         const comments = JSON.parse(commentsItem);
         const topMovies = movies.filter(movie => {
-            const rating = comments.find(r => r.movieId === movie.id);
+            const rating = comments.find(r => r.movieId == movie.id);
             return !!rating;
         }).sort((movie1, movie2) => {
-            const comments1 = comments.filter(r => r.movieId === movie1.id).length;
-            const comments2 = comments.filter(r => r.movieId === movie2.id).length;
+            const comments1 = comments.filter(r => r.movieId == movie1.id).length;
+            const comments2 = comments.filter(r => r.movieId == movie2.id).length;
             return comments1 < comments2 ? 1 : -1;
 
         })
@@ -293,20 +276,24 @@ function getComments(movieId) {
     return comments.filter(comment => comment.movieId == movieId);
 }
 
-function filterByName(movies, name) {
-    return movies.filter(movie => movie.name.toLowerCase().startsWith(name.toLowerCase()))
+function filterByName(movies, title) {
+    return movies.filter(movie => movie.title.toLowerCase().startsWith(title.toLowerCase()))
 }
+
+function goToLogin() {
+    window.location.href = "../login";
+};
 
 fetch('https://api.npoint.io/f037e09ef04e5df7150c')
     .then(response => response.json())
     .then(data => {
-        const movies = data.movies.slice(10, 20);
+        const movies = data.movies.slice(0, 30);
         addMoviesList(movies, data.movies);
 
         const search = document.getElementById("search");
         search.addEventListener('change', (e) => {
-            const name = search.value;
-            let filteredMovies = filterByName(data.movies, name);
-            addMoviesList(filteredMovies.slice(0, 10), data.movies);
+            const title = search.value;
+            let filteredMovies = filterByName(data.movies, title);
+            addMoviesList(filteredMovies.slice(0, 30), data.movies);
         })
     });
