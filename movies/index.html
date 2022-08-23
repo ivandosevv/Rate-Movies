@@ -6,24 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movies</title>
     <link rel="stylesheet" href="./style.css" />
-    <script src="script.js" type="text/javascript"></script>
   </head>
   <body>
-    <div class="main">
-      <div class="header">Movie List</div>
-      <div class="filter-box">
-        <input
-          type="text"
-          class="filter-input"
-          id="search"
-          placeholder="Search..."
-        />
+    <header>
+      <div class ="movies">
+        <h1>Movies</h1>
+        <input type="text" class="filter-input" id="search" placeholder="Search..."/>
+      </div>
+      <nav>
         <button class="top-10" id="top-10-rated">Top 10 Rated</button>
         <button class="top-10" id="top-10-popular">Top 10 Popular</button>
+        <button class = "logout" onclick="goToLogin()">Log out</button>
+      </nav>
+
+    </header>
+    <main>
+      <div class="filter-box">
       </div>
       <div class="movies-table">
         <ul id="movies-list"></ul>
       </div>
-    </div>
+    <main>
+      <script src="script.js" type="text/javascript"></script>
   </body>
 </html>

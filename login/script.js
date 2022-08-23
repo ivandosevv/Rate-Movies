@@ -40,7 +40,7 @@ window.onload = function(){
             } else {
                 if (currUser[0].password === currPassword) {
                     localStorage.setItem("currUser", JSON.stringify(currUser[0]));
-                    window.location.href = "../recipes";
+                    window.location.href = "../movies";
                 } else {
                     showErrorMessage("Wrong password!")
                 }

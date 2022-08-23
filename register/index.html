@@ -8,41 +8,15 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="login-box">
-      <div class="data">
+    <div class="login-wrapper">
         <h1>Register</h1>
-        <div id="error-message" class="error-message"></div>
-        <form class="login-box-form" id="signup-form">
-          <input
-            class="input-field"
-            type="email"
-            name="login-name"
-            placeholder="Email"
-            id="email"
-            required
-          />
-          <input
-            class="input-field"
-            type="password"
-            name="password"
-            placeholder="Password"
-            id="password"
-            required
-          />
-          <input
-            class="input-field"
-            type="password"
-            name="confirm-password"
-            placeholder="Confirm Password"
-            id="confirm-password"
-            required
-          />
-          <div class="login-box-submit">
-            <input type="submit" class="submit" id="sign-up" value="Sign up" />
-          </div>
+        <form class="login-form" id="login-form">
+          <input class="input-field" type="text" name="email" id="email" placeholder="Email Address" required/>
+          <input class="input-field" type="password" name="password" id="password" placeholder="Password" required/>
+          <input class="input-field" type="password" name="confirm-password" placeholder="Confirm Password" id="confirm-password" required/>
+            <input class="submit" type="submit" id="sign-up" value="SIGN UP" />
         </form>
       </div>
-    </div>
     <script src="script.js" type="text/javascript"></script>
   </body>
 </html>

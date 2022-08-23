@@ -1,93 +1,103 @@
-function addMovie(movies, allMovies) {
+function addMoviesList(movies, allMovies) {
     const moviesList = document.getElementById('movies-list');
     moviesList.innerHTML = "";
-
     movies.forEach(movie => {
         moviesList.innerHTML += `
-        <li>
-            <div class="li-section">
-                <img class="movie-image"
-                    src="${movie.image}"
-                    width="50px" height="50px">
-                <div class="movie-name">
-                    ${movie.title}
-                </div>
-            </div>
-            <div class="li-section">
-                <div>
-                    ${getRating(movie.id)}
-                </div>
-                &nbsp;&nbsp;&nbsp;
-                <div>
-                    ${getCommentsCount(movie.id)}
-                </div>
-                &nbsp;&nbsp;&nbsp;
-                <button class="see-movie-button" id="${movie.id}">See movie</button>
-            </div>
-            <div id="${movie.id}-movie" class="modal">
-                <div class="modal-content">
-                    <div class="modal-movie-name">${movie.title}
-                        <div class="movie-categories">
-                        ${movie.genres[0].name}, ${movie.production_countries[0].name}
+                <li>
+                    <div class="li-section">
+                        <img class="movie-image"
+                            src="${movie.image}"
+                            width="50px" height="50px">
+                        <div class="movie-name">
+                            ${movie.title}
                         </div>
                     </div>
-                    <img src="${movie.image}"
-                        width="200px" height="200px" class="modal-movie-image">
-                    <div class="modal-movie-description">${movie.overview}</div>
-                    <div class="comment-section">
+                    <div class="li-section">
+                        <div>
+                        ${getRating(movie.id)}
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div>
+                        ${getCommentsCount(movie.id)}
+                        </div>&nbsp;&nbsp;&nbsp;
+                        
+                        <button class="see-movie-button" id="${movie.id}">See movie</button>
+                    </div>
+                    <div id="${movie.id}-movie" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-movie-name">${movie.title}
+                            </div>
+                            <img src="${movie.image}"
+                                width="200px" height="200px" class="modal-movie-image">
+                            <div class="modal-movie-description">${movie.overview}</div>
+                            <table class="modal-category-table">
+                                <tr>
+                                    <th>Genres</th>
+                                </tr>
+                                ${movie.genres.map(genre => `<tr>
+                                    <td>${genre.name}</td>
+                                </tr>`)}
+                            </table>
+                            <table class="modal-country-table">
+                                <tr>
+                                    <th>Production countries</th>
+                                </tr>
+                                ${movie.production_countries.map(country => `<tr>
+                                    <td>${country.name}</td>
+                                </tr>`)}
+                            </table>
+                            <div class="comment-section">
+                            <textarea id="${movie.id}-comment-input" rows="5" class="comment-input" maxlength="200" placeholder="Comment..."></textarea>
+                            <button class="comment-button" id="${movie.id}-comment">Comment</button>
+                            <div>
+                            <input type="radio" id="1" name="${movie.id}-rating" value="1">
+                            <label for="1">1</label>
+                            <input type="radio" id="2" name="${movie.id}-rating" value="2">
+                            <label for="2">2</label>
+                            <input type="radio" id="3" name="${movie.id}-rating" value="3">
+                            <label for="3">3</label> 
+                            <input type="radio" id="4" name="${movie.id}-rating" value="4">
+                            <label for="4">4</label>
+                            <input type="radio" id="5" name="${movie.id}-rating" value="5">
+                            <label for="5">5</label> 
+                            <button class="rate-button" id="${movie.id}-rate">Rate</button>
+                            </div>
+                            <div class="all-comments" id="${movie.id}-comments" > 
+                                ${getComments(movie.id).map(comment => `<div class="comment-container">
+                                    <div class="comment-author">
+                                        ${comment.author}
+                                    </div>
+                                    <div class="comment-text">
+                                        ${comment.comment}
+                                    </div>
+                                    <div class="comment-date">
+                                        ${comment.timestamp}
+                                    </div>
+                                </div>`).join('<br>')}
+                            </div>  
+                            </div>
+                            <div class="close-button-section">
+                                <button class="close-button" id="${movie.id}-close">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+        `
+    })
 
-                    <textarea id="${movie.id}-comment-input" rows="5" class="comment-input" maxlength="200" 
-                    placeholder="Comment..."></textarea>
-                    <button class="comment-button" id="${movie.id}-comment">Comment</button>
-                    
-                    <div>
-                        <input type="radio" id="1" name="${movie.id}-rating" value="1">
-                        <label for="1">1</label>
-                        <input type="radio" id="2" name="${movie.id}-rating" value="2">
-                        <label for="2">2</label>
-                        <input type="radio" id="3" name="${movie.id}-rating" value="3">
-                        <label for="3">3</label> 
-                        <input type="radio" id="4" name="${movie.id}-rating" value="4">
-                        <label for="4">4</label>
-                        <input type="radio" id="5" name="${movie.id}-rating" value="5">
-                        <label for="5">5</label> 
-                        <button class="rate-button" id="${movie.id}-rate">Rate</button>
-                    </div>
-                    <div class="all-comments" id=${movie.id}-comments">
-                        ${getComments(movie.id).map(currComment => `<div class="comment-container">
-                            <div class="comment-author">
-                                ${currComment.author}
-                            </div>
-                            <div class="comment-text">
-                                ${currComment.comment}
-                            </div>
-                            <div class="comment-date">
-                                ${currComment.timestamp}
-                            </div>
-                        </div>`).join('<br>')}
-                    </div>
-                </div>
-                <div class="close-button-section">
-                    <button class="close-button" id=${movie.id}-close">Close</button>
-                </div>
-            </div>
-        </div>
-    </li>
-    `})
 
     const buttons = document.getElementsByClassName("see-movie-button");
 
-    Array.prototype.forEach.call(buttons, function(button) {
+    Array.prototype.forEach.call(buttons, function (button) {
         const modal = document.getElementById(`${button.id}-movie`);
         const close = document.getElementById(`${button.id}-close`);
 
-        button.onlick = function() {
+        button.onclick = function () {
             modal.style.display = "block";
         }
 
-        //close.onclick = function () {
-        //    modal.style.display = "none";
-        // }
+        close.onclick = function () {
+            modal.style.display = "none";
+        }
     });
 
     const commentButtons = document.getElementsByClassName("comment-button");
@@ -101,96 +111,61 @@ function addMovie(movies, allMovies) {
 
     const rateButtons = document.getElementsByClassName("rate-button");
     Array.prototype.forEach.call(rateButtons, (button) => {
-        button.onClick = () => {
+        button.onclick = () => {
             const movieId = button.id.substr(0, button.id.indexOf('-'));
             const value = document.querySelector(`input[name="${movieId}-rating"]:checked`).value;
             rate(value, movieId);
         }
     });
 
-    const topTenRateButton = document.getElementById("top-10-rated");
-    topTenRateButton.onClick = () => getTopTenRated(allMovies);
+    const top10RateButton = document.getElementById("top-10-rated");
+    top10RateButton.onclick = () => getTop10Rated(allMovies);
 
-    const topTenPopularButton = document.getElementById("top-10-popular");
-    topTenPopularButton.onClick = () => getTopTenPopular(allMovies);
+    const top10PopularButton = document.getElementById("top-10-popular");
+    top10PopularButton.onclick = () => getTop10Popular(allMovies);
 }
 
-function getTopTenRated(allMovies) {
+function getTop10Rated(movies) {
     const ratingsItem = localStorage.getItem("ratings");
-
-    if (!ratingsItem) {
+    if(!ratingsItem) {
         return [];
     } else {
         const ratings = JSON.parse(ratingsItem);
-        const topMovies = allMovies.filter(currMovie => {
-            const rating = ratings.find(curr => curr.movieId === currMovie.id);
+        const topMovies = movies.filter(movie => {
+            const rating = ratings.find(r => r.movieId === movie.id);
             return !!rating;
-        }).sort((firstMovie, secondMovie) => {
-            const firstRating = ratings.find(r => r.movieId === firstMovie.id);
-            const secondRating = ratings.find(r => r.movieId === secondMovie.id);
-            return firstRating.rating < secondRating.rating ? 1 : -1;
+        }).sort((movie1, movie2) => {
+            const rating1 = ratings.find(r => r.movieId === movie1.id);
+            const rating2 = ratings.find(r => r.movieId === movie2.id);
+            return rating1.rating < rating2.rating ? 1 : -1;
         })
-
         topMovies.slice(0, 10);
-        addMovie(topMovies, allMovies);
+        addMoviesList(topMovies, movies);
     }
 }
 
-function getTopTenPopular(allMovies) {
-    const popularItem = localStorage.getItem("comments");
-
-    if (!popularItem) {
+function getTop10Popular(movies) {
+    const commentsItem = localStorage.getItem("comments");
+    if(!commentsItem) {
         return [];
     } else {
-        const comments = JSON.parse(popularItem);
-        const topMovies = allMovies.filter(currMovie => {
-            const comment = ratings.find(curr => curr.movieId === currMovie.id);
+        const comments = JSON.parse(commentsItem);
+        const topMovies = movies.filter(movie => {
+            const rating = comments.find(r => r.movieId === movie.id);
             return !!rating;
-        }).sort((firstMovie, secondMovie) => {
-            const firstComments = comments.filter(r => r.movieId === firstMovie.id).length;
-            const secondComments = comments.filter(r => r.movieId === secondMovie.id).length;
-            return firstComments < secondComments ? 1 : -1;
+        }).sort((movie1, movie2) => {
+            const comments1 = comments.filter(r => r.movieId === movie1.id).length;
+            const comments2 = comments.filter(r => r.movieId === movie2.id).length;
+            return comments1 < comments2 ? 1 : -1;
+
         })
-
         topMovies.slice(0, 10);
-        addMovie(topMovies, allMovies);
+        addMoviesList(topMovies, movies);
     }
-}
-
-function getRating(movieId) {
-    const ratingsItem = localStorage.getItem("ratings");
-
-    if (!ratingsItem) {
-        return "No reviews";
-    }
-    const ratings = JSON.parse(ratingsItem);
-    const rating = ratings.filter(rating => rating.movieId === movieId);
-
-    return rating.length === 0  ? 'No reviews' : `${rating[0].rating.toFixed(2)}&nbsp;/&nbsp;6.00`;
-}
-
-function getCommentsCount(movieId) {
-    const commentsItem = localStorage.getItem("comments");
-
-    if (!commentsItem) {
-        return "No comments";
-    }
-    const comments = JSON.parse(commentsItem);
-    const count = comments.filter(comment => comment.movieId === movieId).length;
-    return count === 0  ? 'No comments' : `${count} comments`;
-}
-
-function getComments(movieId) {
-    const commentsItem = localStorage.getItem("comments");
-    if (!commentsItem) {
-        return [];
-    }
-    const comments = JSON.parse(commentsItem);
-    return comments.filter(comment => comment.movieId === movieId);
 }
 
 function addComment(comment, movieId) {
-    const author = JSON.parse(localStorage.getItem("currentUser")).email;
+    const author = JSON.parse(localStorage.getItem("currUser")).email;
     const commentsItem = localStorage.getItem("comments");
     const commentsDiv = document.getElementById(`${movieId}-comments`);
     if (!commentsItem) {
@@ -250,7 +225,6 @@ function addComment(comment, movieId) {
 
 function rate(rating, movieId) {
     const ratingsItem = localStorage.getItem("ratings");
-
     if (!ratingsItem) {
         localStorage.setItem("ratings", JSON.stringify([{
             movieId,
@@ -258,7 +232,8 @@ function rate(rating, movieId) {
             votes: 1,
         }]))
         window.location.reload();
-    } else {
+    }
+    else {
         const ratings = JSON.parse(ratingsItem);
         if (ratings.filter(r => r.movieId === movieId).length === 0) {
             ratings.push({
@@ -283,24 +258,55 @@ function rate(rating, movieId) {
             localStorage.setItem("ratings", JSON.stringify(newRatings));
             window.location.reload();
         }
+
     }
 }
 
-function filterByName(movies, name) {
-    return movies.filter(movie => movie.title.toLowerCase().startsWith(name.toLowerCase()));
+function getRating(movieId) {
+    const ratingsItem = localStorage.getItem("ratings");
+    if (!ratingsItem) {
+        return "No reviews";
+    }
+    const ratings = JSON.parse(ratingsItem);
+    const rating = ratings.filter(rating => rating.movieId == movieId);
+    return rating.length === 0  ? 'No reviews' : `${rating[0].rating.toFixed(2)}&nbsp;/&nbsp;6.00`;
 }
 
-fetch('https://api.npoint.io/f037e09ef04e5df7150c') 
+function getCommentsCount(movieId) {
+    const commentsItem = localStorage.getItem("comments");
+    if (!commentsItem) {
+        return "No comments";
+    }
+    const comments = JSON.parse(commentsItem);
+    const count = comments.filter(comment => comment.movieId == movieId).length;
+    return count === 0  ? 'No comments' : `${count} comments`;
+}
+
+function getComments(movieId) {
+    const commentsItem = localStorage.getItem("comments");
+    if (!commentsItem) {
+        return [];
+    }
+    const comments = JSON.parse(commentsItem);
+    console.log(comments.filter(comment => comment.movieId == movieId));
+    //console.log(comment.movieId)
+    return comments.filter(comment => comment.movieId == movieId);
+}
+
+function filterByName(movies, name) {
+    return movies.filter(movie => movie.name.toLowerCase().startsWith(name.toLowerCase()))
+}
+
+fetch('https://api.npoint.io/f037e09ef04e5df7150c')
     .then(response => response.json())
     .then(data => {
         const movies = data.movies.slice(10, 20);
-
-        addMovie(movies, data.movies);
+        addMoviesList(movies, data.movies);
 
         const search = document.getElementById("search");
         search.addEventListener('change', (e) => {
             const name = search.value;
             let filteredMovies = filterByName(data.movies, name);
-            addMovie(filteredMovies.slice(0, 10), data.movies);
+            addMoviesList(filteredMovies.slice(0, 10), data.movies);
         })
-    })
+    });

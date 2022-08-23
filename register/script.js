@@ -49,7 +49,7 @@ window.onload = function(){
                 localStorage.setItem("currUser", JSON.stringify({
                     email: currEmail
                 }))
-                window.location.href = "../recipes";
+                window.location.href = "../movies";
             }
         } else {
             //If there are registered users, then we just add this user
@@ -75,7 +75,7 @@ window.onload = function(){
                         email: currEmail
                     }));
                     
-                    window.location.href = "../recipes";
+                    window.location.href = "../movies";
                 }
             }
         }
