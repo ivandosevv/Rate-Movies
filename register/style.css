@@ -7,7 +7,7 @@ body {
     background-color: #ACC4E4;
 }
 
-.login-wrapper {
+.signup-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;

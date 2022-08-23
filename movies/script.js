@@ -269,7 +269,7 @@ function getRating(movieId) {
     }
     const ratings = JSON.parse(ratingsItem);
     const rating = ratings.filter(rating => rating.movieId == movieId);
-    return rating.length === 0  ? 'No reviews' : `${rating[0].rating.toFixed(2)}&nbsp;/&nbsp;6.00`;
+    return rating.length === 0  ? 'No reviews' : `${rating[0].rating.toFixed(2)}&nbsp;/&nbsp;5.00`;
 }
 
 function getCommentsCount(movieId) {
